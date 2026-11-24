@@ -1,0 +1,25 @@
+name: Build Tashreeq VST3 (Windows)
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build-windows-vst3:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure CMake (Visual Studio 2022 x64)
+        run: cmake -B build -G "Visual Studio 17 2022" -A x64
+
+      - name: Build Tashreeq VST3 (Release)
+        run: cmake --build build --config Release --target TashreeqVST_VST3
+
+      - name: Upload Ready-to-Copy VST3 Plugin
+        uses: actions/upload-artifact@v4
+        with:
+          name: Tashreeq-VST3-Ready-For-Mixcraft10
+          path: build/TashreeqVST_artefacts/Release/VST3/Tashreeq VST.vst3
